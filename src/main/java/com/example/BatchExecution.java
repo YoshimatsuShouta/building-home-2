@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 
-
 /**
  * すべてのDB情報を用意するメソッド.
  * 
@@ -49,6 +48,8 @@ public class BatchExecution {
 		createAddress(true);
 		createInstitutions(true);
 		createTagSpecies(true);
+		
+		
 	}}
 	
 	/**
@@ -61,7 +62,7 @@ public class BatchExecution {
 		StringBuilder deleteSql =new StringBuilder();
 		
 		//以下table名を追加するとDropされます
-		String[] tableNames={"address","municipalities","prefectures","original","institutions","tag_species"};
+		String[] tableNames={"address","municipalities","prefectures","original","institutions","tag_species","crimes"};
 		
 		//sql実行
 		for(String tableName : tableNames) {
@@ -82,9 +83,6 @@ public class BatchExecution {
 	 */
 	public static void createOriginal(boolean execute ) throws SQLException {
 		if(execute) {
-		String deleteSql = "DROP TABLE IF EXISTS original;";
-		PreparedStatement deletePstmt = con.prepareStatement(deleteSql);
-		deletePstmt.execute();
 		String createSql = "CREATE TABLE original (\r\n"
 				+ "	id serial NOT NULL,\r\n"
 				+ "	prefectures_code integer,\r\n"
@@ -148,7 +146,28 @@ public class BatchExecution {
 		PreparedStatement createPstmt = con.prepareStatement(createSql);
 		createPstmt.execute();}
 	}
-	
+	public static void createCrimes(boolean execute ) throws SQLException {
+		if(execute) {
+		String createSql = "CREATE TABLE crimes (\r\n"
+				+ "  id SERIAL PRIMARY KEY\r\n"
+				+ "  ,crime_name INTEGER NOT NULL\r\n"
+				+ "  ,date_incident TIMESTAMP NOT NULL\r\n"
+				+ "  ,police_station VARCHAR(50) \r\n"
+				+ "  ,police_box VARCHAR(50)\r\n"
+				+ "  ,address_id INTEGER NOT NULL\r\n"
+				+ "  ,gender_victim INTEGER NOT NULL\r\n"
+				+ "  ,age_victime INTEGER NOT NULL\r\n"
+				+ "  ,cash_damage BOOLEAN NOT NULL\r\n"
+				+ "  ,registered_user TEXT NOT NULL\r\n"
+				+ "  ,registered_date_time TIMESTAMP NOT NULL\r\n"
+				+ "  ,updated_user TEXT NOT NULL\r\n"
+				+ "  ,updated_date_time TIMESTAMP NOT NULL\r\n"
+				+ "  ,deleted BOOLEAN NOT NULL \r\n"
+				+ "  ,FOREIGN KEY(address_id) REFERENCES address(id)\r\n"
+				+ ");";
+		PreparedStatement createPstmt = con.prepareStatement(createSql);
+		createPstmt.execute();}
+	}
 	
 	/**
 	 * データをinsertします(mainメソッドを使用).
@@ -164,6 +183,7 @@ public class BatchExecution {
 			CsvImportMain.main(args);
 			PrefecturesMain.main(args);
 			InstitutionMain.main(args);
+			//crimesのメインメソッドを追加してください
 		}
 		
 	}
