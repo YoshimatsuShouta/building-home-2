@@ -1,4 +1,5 @@
 -- prefectures（都道府県）テーブルの作成
+DROP TABLE IF EXISTS prefectures CASCADE;
 CREATE TABLE prefectures (
   id INT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -7,6 +8,7 @@ CREATE TABLE prefectures (
 );
 
 -- municipalities（市町村）テーブルの作成
+DROP TABLE IF EXISTS municipalities CASCADE;
 CREATE TABLE municipalities (
   id INT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -17,6 +19,7 @@ CREATE TABLE municipalities (
 );
 
 -- address（住所）テーブルの作成 
+DROP TABLE IF EXISTS address CASCADE;
 	CREATE TABLE address (
 	id serial NOT NULL,
 	name character varying (255),
@@ -32,6 +35,7 @@ CREATE TABLE municipalities (
 );
 
 -- original
+DROP TABLE IF EXISTS original CASCADE;
 CREATE TABLE original (
 	id serial NOT NULL,
 	prefectures_code integer,
@@ -51,26 +55,40 @@ CREATE TABLE original (
 );
 
 -- price_of_land
+DROP TABLE IF EXISTS price_of_land CASCADE;
 CREATE TABLE price_of_land (
 	id serial NOT NULL,
-  	municipality_id INTEGER NOT NULL,
-  	address_id INTEGER NOT NULL,
-  	address_num VARCHAR(255) NOT NULL,
-  	current_price INTEGER NOT NULL,
-  	previos_price INTEGER,
-  	change_previos_price DOUBLE PRECISION,
-  	acreage INTEGER,
-  	nearest_station VARCHAR(255),
-  	usage TEXT,
-  	neighborhood_usage TEXT,
-  	info_year INTEGER NOT NULL,
-  	FOREIGN KEY (municipality_id) REFERENCES municipalities (id),
-  	FOREIGN KEY (address_id) REFERENCES address (id)
+	municipality_id INTEGER NOT NULL,
+	address_id INTEGER NOT NULL,
+	address_num VARCHAR(255) NOT NULL,
+	current_price INTEGER NOT NULL,
+	previos_price INTEGER,
+	change_previos_price DOUBLE PRECISION,
+	acreage INTEGER,
+	nearest_station VARCHAR(255),
+	usage TEXT,
+	neighborhood_usage TEXT,
+	info_year INTEGER NOT NULL,
+	FOREIGN KEY (municipality_id) REFERENCES municipalities (id),
+	FOREIGN KEY (address_id) REFERENCES address (id)
 );
 
-
-DROP TABLE IF EXISTS original CASCADE;
-DROP TABLE IF EXISTS prefectures CASCADE;
-DROP TABLE IF EXISTS municipalities CASCADE;
-DROP TABLE IF EXISTS address CASCADE;
-DROP TABLE IF EXISTS price_of_land CASCADE;
+--crimesテーブルの削除・新規作成
+DROP TABLE IF EXISTS crimes CASCADE;
+CREATE TABLE crimes (
+  id SERIAL PRIMARY KEY
+  ,crime_name INTEGER NOT NULL
+  ,date_incident TIMESTAMP NOT NULL
+  ,police_station VARCHAR(50) 
+  ,police_box VARCHAR(50)
+  ,address_id INTEGER NOT NULL
+  ,gender_victim INTEGER NOT NULL
+  ,age_victime INTEGER NOT NULL
+  ,cash_damage BOOLEAN NOT NULL
+  ,registered_user TEXT NOT NULL
+  ,registered_date_time TIMESTAMP NOT NULL
+  ,updated_user TEXT NOT NULL
+  ,updated_date_time TIMESTAMP NOT NULL
+  ,deleted BOOLEAN NOT NULL 
+  ,FOREIGN KEY(address_id) REFERENCES addresses(id)
+);
