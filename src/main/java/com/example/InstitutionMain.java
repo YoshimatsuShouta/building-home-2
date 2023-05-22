@@ -20,11 +20,12 @@ import java.util.Map;
 
 /**
  * 施設tableの作成.
+ * 
  * @author yoshida_yuuta
  *
  */
 public class InstitutionMain {
-	
+
 	public static void main(String[] args) throws IOException, SQLException, ParseException {
 		Connection con = SampleDBManager.createConnection();
 
@@ -32,22 +33,21 @@ public class InstitutionMain {
 		List<String[]> institutionData = readDataAsShiftJis(
 				"https://www.opendata.metro.tokyo.lg.jp/suisyoudataset/130001_public_facility.csv");
 		List<String[]> poiData = readData("src/main/resources/POIコード.csv");
-		
-		//区分を割り当てる貯めのメソッド
+
+		// 区分を割り当てる貯めのメソッド
 		Map<String, Integer> addressMap = addressToMap(con);
-		
+
 		// DBアクセス処理
 		insertInstitutionsData(institutionData, poiData, con, addressMap);
 	}
 
-	
 	/**
 	 * CSVで得た施設情報をInsert.
 	 * 
-	 * @param institutiosDatas　施設csv情報
-	 * @param poiData　タグに関わるcsvデータ
-	 * @param conn　DBアクセスに必要な情報
-	 * @param addresssMap　住所とそのIDのmap
+	 * @param institutiosDatas 施設csv情報
+	 * @param poiData          タグに関わるcsvデータ
+	 * @param conn             DBアクセスに必要な情報
+	 * @param addresssMap      住所とそのIDのmap
 	 * @throws SQLException
 	 * @throws ParseException
 	 */
@@ -99,8 +99,8 @@ public class InstitutionMain {
 	/**
 	 * csvデータを読み込むメソッド.
 	 * 
-	 * @param ex　読み込むcsvの詳細
-	 * @return　読み込んだデータ
+	 * @param ex 読み込むcsvの詳細
+	 * @return 読み込んだデータ
 	 * @throws IOException
 	 */
 	public static List<String[]> readData(String ex) throws IOException {
@@ -124,8 +124,8 @@ public class InstitutionMain {
 	}
 
 	/**
-	 * 該当ファイルのみ、表示の型と改行等が入っているため別処理を作成.
-	 *他は一つ上のメソッドと同じ 
+	 * 該当ファイルのみ、表示の型と改行等が入っているため別処理を作成. 他は一つ上のメソッドと同じ.
+	 * 
 	 * @param ex
 	 * @return
 	 * @throws IOException
@@ -157,9 +157,10 @@ public class InstitutionMain {
 	}
 
 	/**
-	 * 住所情報とiｄをmap煮詰めるメソッド
-	 * @param con　DBアクセス情報
-	 * @return　map(大字名,id)
+	 * 住所情報とiｄをmapを詰めるメソッド.
+	 * 
+	 * @param con DBアクセス情報
+	 * @return map(大字名,id)
 	 * @throws SQLException
 	 */
 	public static Map<String, Integer> addressToMap(Connection con) throws SQLException {
@@ -178,9 +179,10 @@ public class InstitutionMain {
 	}
 
 	/**
-	 * 半角、漢数字を全角数字に変換する(10以降非対応)
-	 * @param data　変換するもの
-	 * @return　返還後の数字
+	 * 半角、漢数字を全角数字に変換する(10以降非対応).
+	 * 
+	 * @param data 変換するもの
+	 * @return 返還後の数字
 	 */
 	public static String convertHalfWidthNumber(String data) {
 		data = data.replace("0", "０").replace("1", "１").replace("2", "２").replace("3", "３").replace("4", "４")

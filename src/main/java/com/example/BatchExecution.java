@@ -27,7 +27,7 @@ public class BatchExecution {
 	public static void main(String[] args) throws SQLException, IOException, ParseException {
 		
 		//以下をtrueにして実行するとDBが準備されます。
-		boolean execute =true;
+		boolean execute =false;
 		
 		//実行しないものは以下のメソッド内でfalseに変更 drop:tableの消去　create:テーブル作成 insert:データを入れます
 		dropTable(execute);
