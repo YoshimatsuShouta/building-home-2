@@ -68,6 +68,45 @@ CREATE TABLE price_of_land (
   	FOREIGN KEY (address_id) REFERENCES address (id)
 );
 
+-- institution 
+	CREATE TABLE institution (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255),
+	longitude DECIMAL (9,6),
+	latitude DECIMAL (9,6),
+	available_days VARCHAR(255),
+	start_time VARCHAR(255),
+	end_time VARCHAR(255),
+	phone_number VARCHAR(20),
+	address VARCHAR(255),
+	postal_code VARCHAR(10),
+	tag_id INTEGER NOT NULL,
+	municipalities_id INTEGER NOT NULL
+);
+
+-- tag_species
+	CREATE TABLE tag_species (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255)
+);
+-- crimes
+	CREATE TABLE crimes (
+	id SERIAL PRIMARY KEY,
+	crime_name INTEGER NOT NULL,
+	date_incident TIMESTAMP NOT NULL,
+	police_station VARCHAR(50),
+	police_box VARCHAR(50),
+	address_id INTEGER NOT NULL,
+	gender_victim INTEGER NOT NULL,
+	age_victime INTEGER NOT NULL,
+	cash_damage BOOLEAN NOT NULL,
+	registered_user TEXT NOT NULL,
+	registered_date_time TIMESTAMP NOT NULL,
+	updated_user TEXT NOT NULL,
+	updated_date_time TIMESTAMP NOT NULL,
+	deleted BOOLEAN NOT NULL,
+	FOREIGN KEY (address_id) REFERENCES address (id)
+);
 
 DROP TABLE IF EXISTS original CASCADE;
 DROP TABLE IF EXISTS prefectures CASCADE;
