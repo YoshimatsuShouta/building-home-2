@@ -1,5 +1,11 @@
 package com.example;
 
+/**
+ * 住所情報に関するドメイン.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class Address {
 	/** 町丁名 */
 	private String address;

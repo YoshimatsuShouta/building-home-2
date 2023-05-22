@@ -6,7 +6,18 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 地価テーブルを操作するリポジトリ.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class PriceOfLandRepository {
+	/**
+	 * 地価テーブルに情報を挿入する.
+	 * 
+	 * @param priceOfLandList
+	 */
 	public void insertToPriceOfLand(List<PriceOfLand> priceOfLandList) {
 		Connection con = SampleDBManager.createConnection();
 

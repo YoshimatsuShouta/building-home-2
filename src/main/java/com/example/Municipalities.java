@@ -1,5 +1,11 @@
 package com.example;
 
+/**
+ * 市区町村テーブルに関するドメイン.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class Municipalities {
 	/** 市区町村コード */
 	private Integer id;

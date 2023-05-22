@@ -3,6 +3,12 @@ package com.example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * データベースとの接続、切断に関するクラス.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class SampleDBManager {
 	private final static String URL = "jdbc:postgresql://localhost:5432/homedb";
 	private final static String USER_NAME = "postgres";

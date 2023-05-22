@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 地価csvから情報を取り出しテーブルに挿入するメイン.
+ * 
  * @author yoshimatsushouta
  *
  */
@@ -175,7 +177,7 @@ public class PriceOfLandCsvImportMain {
 		return ad;
 	}
 
-	// 住所が大文字の数字始まっているかを確認する
+	// 住所が大文字の数字から始まっているかを確認する
 	public static boolean startsWithDigit(String str) {
 		return str.matches("[０-９].*");
 	}

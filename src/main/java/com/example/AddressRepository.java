@@ -6,7 +6,18 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 住所に関するリポジトリ.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class AddressRepository {
+	/**
+	 * 住所情報をテーブルに挿入する.
+	 * 
+	 * @param originalList オリジナルテーブル一行ごとのリスト
+	 */
 	public void insertToAddress(List<Original> originalList) {
 		Connection con = SampleDBManager.createConnection();
 

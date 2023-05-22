@@ -1,5 +1,11 @@
 package com.example;
 
+/**
+ * オリジナルの情報に関するドメイン.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class Original {
 	/** 都道府県コード */
 	private Integer prefecturesCode;

@@ -5,7 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * 市区町村テーブルを操作するリポジトリ.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class MunicipalitiesRepository {
+	/**
+	 * 市区町村テーブルに情報を挿入する.
+	 * 
+	 * @param originalList オリジナルテーブル一行ごとの情報
+	 */
 	public void insertToMunicipalities(List<Original> originalList) {
 		Connection con = SampleDBManager.createConnection();
 
