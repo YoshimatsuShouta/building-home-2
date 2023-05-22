@@ -81,14 +81,10 @@ CREATE TABLE price_of_land (
 	address VARCHAR(255),
 	postal_code VARCHAR(10),
 	tag_id INTEGER NOT NULL,
-	municipalities_id INTEGER NOT NULL
+	municipalities_id INTEGER NOT NULL,
+	FOREIGN KEY (municipalities_id) REFERENCES municipalities (id)
 );
 
--- tag_species
-	CREATE TABLE tag_species (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(255)
-);
 -- crimes
 	CREATE TABLE crimes (
 	id SERIAL PRIMARY KEY,
