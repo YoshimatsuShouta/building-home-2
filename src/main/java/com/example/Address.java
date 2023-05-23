@@ -1,81 +1,53 @@
 package com.example;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+/**
+ * addressesテーブルの情報を保持するクラス.
+ * 
+ * @author sugaharatakamasa
+ *
+ */
+@Data
+@Entity
+@Table(name = "address")
 public class Address {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
 	/** 町丁名 */
-	private String address;
+	@Column(name = "name")
+	private String name;
+
 	/** 町丁名カナ */
-	private String addressKana;
+	@Column(name = "name_kana")
+	private String nameKana;
+
 	/** 町丁名ローマ字 */
-	private String addressRome;
+	@Column(name = "name_rome")
+	private String nameRome;
+
 	/** 緯度 */
+	@Column(name = "latitude")
 	private Double latitude;
+
 	/** 経度 */
+	@Column(name = "longitude")
 	private Double longitude;
+
 	/** 都道府県コード */
-	private Integer prefecturesCode;
+	@Column(name = "prefecture_id")
+	private Integer prefectureId;
+
 	/** 市区町村コード */
-	private Integer municipalitiesCode;
+	@Column(name = "municipalityId")
+	private Integer municipalityId;
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getAddressKana() {
-		return addressKana;
-	}
-
-	public void setAddressKana(String addressKana) {
-		this.addressKana = addressKana;
-	}
-
-	public String getAddressRome() {
-		return addressRome;
-	}
-
-	public void setAddressRome(String addressRome) {
-		this.addressRome = addressRome;
-	}
-
-	public Double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
-	}
-
-	public Double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
-	}
-
-	public Integer getPrefecturesCode() {
-		return prefecturesCode;
-	}
-
-	public void setPrefecturesCode(Integer prefecturesCode) {
-		this.prefecturesCode = prefecturesCode;
-	}
-
-	public Integer getMunicipalitiesCode() {
-		return municipalitiesCode;
-	}
-
-	public void setMunicipalitiesCode(Integer municipalitiesCode) {
-		this.municipalitiesCode = municipalitiesCode;
-	}
-
-	@Override
-	public String toString() {
-		return "Address [address=" + address + ", addressKana=" + addressKana + ", addressRome=" + addressRome
-				+ ", latitude=" + latitude + ", longitude=" + longitude + ", prefecturesCode=" + prefecturesCode
-				+ ", municipalitiesCode=" + municipalitiesCode + "]";
-	}
 }
