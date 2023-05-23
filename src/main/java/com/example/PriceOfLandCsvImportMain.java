@@ -88,6 +88,8 @@ public class PriceOfLandCsvImportMain {
 			System.out.println(index + "件目のファイルの読み込みに失敗");
 		}
 		System.out.println("確認:" + "小野路町字町田".lastIndexOf("字"));
+		myBatch.insertToUsages(priceOfLandList);
+		myBatch.insertToNearestStations(priceOfLandList);
 		myBatch.insertToPriceOfLand(priceOfLandList);// 取得した情報をinsert
 //		for (PriceOfLand kakuninn : priceOfLandList) {
 //			System.out.println(kakuninn);

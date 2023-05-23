@@ -56,7 +56,7 @@ public class InstitutionMain {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		boolean firstIteration = true;
 		PreparedStatement institutionpstmt = conn.prepareStatement(
-				"INSERT INTO institutions (name,longitude,latitude,available_days,start_time,end_time,phone_number,address,postal_code,tag,area) VALUES (?,?,?,?,?,?,?,?,?,?,?) ;");
+				"INSERT INTO institutions (name,longitude,latitude,available_days,start_time,end_time,phone_number,address,postal_code,tag_id,address_id) VALUES (?,?,?,?,?,?,?,?,?,?,?) ;");
 		PreparedStatement tagpstmt = conn.prepareStatement("INSERT INTO  tag_species (name) VALUES (?) ;");
 		int num = 1;
 		for (String[] fields : poiData) {

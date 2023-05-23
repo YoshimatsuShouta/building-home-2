@@ -16,7 +16,7 @@ CREATE TABLE municipalities (
   FOREIGN KEY (prefecture_id) REFERENCES prefectures(id)
 );
 
--- address（住所）テーブルの作成 
+-- addresses（住所）テーブルの作成 
 	CREATE TABLE address (
 	id serial NOT NULL,
 	name character varying (255),
@@ -50,8 +50,8 @@ CREATE TABLE original (
 	CONSTRAINT original_PKC PRIMARY KEY (id)
 );
 
--- price_of_land
-CREATE TABLE price_of_land (
+-- price_of_lands
+CREATE TABLE price_of_lands (
 	id serial NOT NULL,
   	municipality_id INTEGER NOT NULL,
   	address_id INTEGER NOT NULL,
@@ -60,12 +60,28 @@ CREATE TABLE price_of_land (
   	previos_price INTEGER,
   	change_previos_price DOUBLE PRECISION,
   	acreage INTEGER,
-  	nearest_station VARCHAR(255),
-  	usage TEXT,
+  	nearest_station_id INTEGER,
+  	usage_id INTEGER,
   	neighborhood_usage TEXT,
   	info_year INTEGER NOT NULL,
   	FOREIGN KEY (municipality_id) REFERENCES municipalities (id),
-  	FOREIGN KEY (address_id) REFERENCES address (id)
+  	FOREIGN KEY (address_id) REFERENCES address (id),
+  	FOREIGN KEY (usage_id) REFERENCES usages (id),
+  	FOREIGN KEY (nearest_station_id) REFERENCES nearest_stations (id)
+);
+
+-- usages
+CREATE TABLE usages (
+	id serial NOT NULL,
+	usage_text text,
+	CONSTRAINT usage_PKC PRIMARY KEY (id) 
+);
+
+-- nearest_stations
+CREATE TABLE nearest_stations (
+	id serial NOT NULL,
+	name VARCHAR(255),
+	CONSTRAINT nearest_stations_PKC PRIMARY KEY (id) 
 );
 
 -- institution 
@@ -107,5 +123,6 @@ CREATE TABLE price_of_land (
 DROP TABLE IF EXISTS original CASCADE;
 DROP TABLE IF EXISTS prefectures CASCADE;
 DROP TABLE IF EXISTS municipalities CASCADE;
-DROP TABLE IF EXISTS address CASCADE;
-DROP TABLE IF EXISTS price_of_land CASCADE;
+DROP TABLE IF EXISTS addresses CASCADE;
+DROP TABLE IF EXISTS price_of_lands CASCADE;
+DROP TABLE IF EXISTS nearest_stations CASCADE;
