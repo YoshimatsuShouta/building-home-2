@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * オリジナルテーブルに関するリポジトリ.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class OriginalRepository {
 
 	/**

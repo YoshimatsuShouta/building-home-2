@@ -17,6 +17,14 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "address")
+
+/**
+ * 住所情報に関するドメイン.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
+
 public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

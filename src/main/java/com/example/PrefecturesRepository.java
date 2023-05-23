@@ -5,7 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * 都道府県テーブルに関するリポジトリ.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class PrefecturesRepository {
+	/**
+	 * 都道府県テーブルに情報を挿入する.
+	 * 
+	 * @param originalList オリジナルテーブル一行ごとの情報が詰まったリスト.
+	 */
 	public void insertToPrefectures(List<Original> originalList) {
 		Connection con = SampleDBManager.createConnection();
 

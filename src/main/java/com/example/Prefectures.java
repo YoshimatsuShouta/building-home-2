@@ -1,5 +1,11 @@
 package com.example;
 
+/**
+ * 都道府県コードに関するドメイン.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class Prefectures {
 	/** 都道府県コード */
 	private Integer id;

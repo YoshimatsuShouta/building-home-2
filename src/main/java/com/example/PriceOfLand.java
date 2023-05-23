@@ -1,5 +1,11 @@
 package com.example;
 
+/**
+ * 地価に関するドメイン.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class PriceOfLand {
 	/** 市区町村コード */
 	private Integer municipalitiesCode;

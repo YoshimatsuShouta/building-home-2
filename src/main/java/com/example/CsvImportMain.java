@@ -8,6 +8,12 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * csvデータを読み込みオリジナルテーブルに挿入するメイン.
+ * 
+ * @author yoshimatsushouta
+ *
+ */
 public class CsvImportMain {
 	public static void main(String[] args) {
 

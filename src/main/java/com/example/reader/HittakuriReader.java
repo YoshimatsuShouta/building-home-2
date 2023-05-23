@@ -28,7 +28,7 @@ public class HittakuriReader implements ItemReader<HittakuriOriginal> {
 
 	public HittakuriReader() {
 		reader = new FlatFileItemReader<>();
-		reader.setResource(new ClassPathResource("crimes/hittakuri/tokyo_2021hittakuri.csv")); // クラスパスで指定したい。
+		reader.setResource(new ClassPathResource("crimes/hittakuri/tokyo_2021hittakuri.csv"));
 		reader.setLinesToSkip(1);
 		reader.setLineMapper(lineMapper());
 		reader.setEncoding("shift-JIS");
