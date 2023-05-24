@@ -1,4 +1,5 @@
 -- prefectures（都道府県）テーブルの作成
+DROP TABLE IF EXISTS prefectures CASCADE;
 CREATE TABLE prefectures (
   id INT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -7,6 +8,7 @@ CREATE TABLE prefectures (
 );
 
 -- municipalities（市町村）テーブルの作成
+DROP TABLE IF EXISTS municipalities CASCADE;
 CREATE TABLE municipalities (
   id INT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -17,7 +19,8 @@ CREATE TABLE municipalities (
 );
 
 -- addresses（住所）テーブルの作成 
-	CREATE TABLE address (
+DROP TABLE IF EXISTS addresses CASCADE;
+CREATE TABLE addresses (
 	id serial NOT NULL,
 	name character varying (255),
 	name_kana character varying (255),
@@ -32,6 +35,7 @@ CREATE TABLE municipalities (
 );
 
 -- original
+DROP TABLE IF EXISTS original CASCADE;
 CREATE TABLE original (
 	id serial NOT NULL,
 	prefectures_code integer,
@@ -51,6 +55,7 @@ CREATE TABLE original (
 );
 
 -- price_of_lands
+DROP TABLE IF EXISTS price_of_lands CASCADE;
 CREATE TABLE price_of_lands (
 	id serial NOT NULL,
   	municipality_id INTEGER NOT NULL,
@@ -78,6 +83,7 @@ CREATE TABLE usages (
 );
 
 -- nearest_stations
+DROP TABLE IF EXISTS nearest_stations CASCADE;
 CREATE TABLE nearest_stations (
 	id serial NOT NULL,
 	name VARCHAR(255),
@@ -101,28 +107,59 @@ CREATE TABLE nearest_stations (
 	FOREIGN KEY (municipalities_id) REFERENCES municipalities (id)
 );
 
--- crimes
-	CREATE TABLE crimes (
-	id SERIAL PRIMARY KEY,
-	crime_name INTEGER NOT NULL,
-	date_incident TIMESTAMP NOT NULL,
-	police_station VARCHAR(50),
-	police_box VARCHAR(50),
-	address_id INTEGER NOT NULL,
-	gender_victim INTEGER NOT NULL,
-	age_victime INTEGER NOT NULL,
-	cash_damage BOOLEAN NOT NULL,
-	registered_user TEXT NOT NULL,
-	registered_date_time TIMESTAMP NOT NULL,
-	updated_user TEXT NOT NULL,
-	updated_date_time TIMESTAMP NOT NULL,
-	deleted BOOLEAN NOT NULL,
+-- hittakuri
+DROP TABLE IF EXISTS hittakuri CASCADE;
+CREATE TABLE hittakuri (
+	id SERIAL PRIMARY KEY
+	,event_date_time TIMESTAMP NOT NULL
+	,prefecture_id INTEGER NOT NULL
+	,municipalities_id INTEGER NOT NULL
+	,address_id INTEGER NOT NULL
+	,police_station VARCHAR(50)
+	,police_box VARCHAR(50)
+	,victim_gender_id INTEGER 
+	,victim_age_id INTEGER 
+	,cash_damage_id INTEGER 
+	,registered_user TEXT NOT NULL
+	,registered_date_time TIMESTAMP NOT NULL
+	,updated_user TEXT NOT NULL
+	,updated_date_time TIMESTAMP NOT NULL
+	,deleted BOOLEAN NOT NULL
+	FOREIGN KEY (prefecture_id) REFERENCES prefectures (id)
+	FOREIGN KEY (municipality_id) REFERENCES municipalities (id)
 	FOREIGN KEY (address_id) REFERENCES address (id)
+	FOREIGN KEY (victim_gender_id) REFERENCES victim_gender (id)
 );
 
-DROP TABLE IF EXISTS original CASCADE;
-DROP TABLE IF EXISTS prefectures CASCADE;
-DROP TABLE IF EXISTS municipalities CASCADE;
-DROP TABLE IF EXISTS addresses CASCADE;
-DROP TABLE IF EXISTS price_of_lands CASCADE;
-DROP TABLE IF EXISTS nearest_stations CASCADE;
+--テーブル名：victim_ages
+--テーブル詳細：犯罪被害者の年齢情報
+DROP TABLE IF EXISTS victim_ages CASCADE;
+CREATE TABLE victim_ages (
+	id INTEGER PRIMARY KEY
+	,VALUE VARCHAR(50) NOT NULL
+);
+INSERT INTO victim_ages (id,value) VALUES
+(1,'10歳未満')
+,(2,'10歳代')
+,(3,'20歳代')
+,(4,'30歳代')
+,(5,'40歳代')
+,(6,'50歳代')
+,(7,'60-64歳')
+,(8,'64-69歳')
+,(9,'70歳以上')
+,(10,'法人・団体、被害者なし');
+
+--テーブル名：victim_genders
+--テーブル詳細：犯罪被害者の性別情報
+DROPDROP TABLE IF EXISTS victim_genders CASCADE;
+CREATE TABLE victim_genders (
+	id INTEGER PRIMARY KEY
+	,VALUE VARCHAR(50) NOT NULL
+);
+INSERT INTO victim_genders (id,VALUE) VALUES (1,'男性'),(2,'女性')
+
+
+
+
+
