@@ -107,29 +107,6 @@ CREATE TABLE nearest_stations (
 	FOREIGN KEY (municipalities_id) REFERENCES municipalities (id)
 );
 
--- hittakuri
-DROP TABLE IF EXISTS hittakuri CASCADE;
-CREATE TABLE hittakuri (
-	id SERIAL PRIMARY KEY
-	,event_date_time TIMESTAMP NOT NULL
-	,prefecture_id INTEGER NOT NULL
-	,municipalities_id INTEGER NOT NULL
-	,address_id INTEGER NOT NULL
-	,police_station VARCHAR(50)
-	,police_box VARCHAR(50)
-	,victim_gender_id INTEGER 
-	,victim_age_id INTEGER 
-	,cash_damage_id INTEGER 
-	,registered_user TEXT NOT NULL
-	,registered_date_time TIMESTAMP NOT NULL
-	,updated_user TEXT NOT NULL
-	,updated_date_time TIMESTAMP NOT NULL
-	,deleted BOOLEAN NOT NULL
-	FOREIGN KEY (prefecture_id) REFERENCES prefectures (id)
-	FOREIGN KEY (municipality_id) REFERENCES municipalities (id)
-	FOREIGN KEY (address_id) REFERENCES address (id)
-	FOREIGN KEY (victim_gender_id) REFERENCES victim_gender (id)
-);
 
 --テーブル名：victim_ages
 --テーブル詳細：犯罪被害者の年齢情報
@@ -146,20 +123,52 @@ INSERT INTO victim_ages (id,value) VALUES
 ,(5,'40歳代')
 ,(6,'50歳代')
 ,(7,'60-64歳')
-,(8,'64-69歳')
+,(8,'65-69歳')
 ,(9,'70歳以上')
 ,(10,'法人・団体、被害者なし');
 
 --テーブル名：victim_genders
 --テーブル詳細：犯罪被害者の性別情報
-DROPDROP TABLE IF EXISTS victim_genders CASCADE;
+DROP TABLE IF EXISTS victim_genders CASCADE;
 CREATE TABLE victim_genders (
 	id INTEGER PRIMARY KEY
 	,VALUE VARCHAR(50) NOT NULL
 );
-INSERT INTO victim_genders (id,VALUE) VALUES (1,'男性'),(2,'女性')
+INSERT INTO victim_genders (id,VALUE) VALUES (1,'男性'),(2,'女性'),(3,'法人・団体');
+
+--テーブル名：cash_damages
+--テーブル詳細：現金被害の有無
+DROP TABLE IF EXISTS cash_damages CASCADE;
+CREATE TABLE cash_damages (
+	id INTEGER PRIMARY KEY
+	,VALUE VARCHAR(50) NOT NULL
+);
+INSERT INTO cash_damages (id,VALUE) VALUES (1,'あり'),(2,'なし');
 
 
-
-
-
+--テーブル名：hittakuri
+--テーブル詳細：ひったくり情報
+DROP TABLE IF EXISTS hittakuri CASCADE;
+CREATE TABLE hittakuri (
+	id SERIAL PRIMARY KEY
+	,event_date_time TIMESTAMP NOT NULL
+	,prefecture_id INTEGER NOT NULL
+	,municipality_id INTEGER NOT NULL
+	,address_id INTEGER NOT NULL
+	,police_station VARCHAR(50)
+	,police_box VARCHAR(50)
+	,victim_gender_id INTEGER 
+	,victim_age_id INTEGER 
+	,cash_damage_id INTEGER 
+	,registered_user TEXT NOT NULL
+	,registered_date_time TIMESTAMP NOT NULL
+	,updated_user TEXT NOT NULL
+	,updated_date_time TIMESTAMP NOT NULL
+	,deleted BOOLEAN NOT NULL
+	,FOREIGN KEY (prefecture_id) REFERENCES prefectures (id)
+	,FOREIGN KEY (municipality_id) REFERENCES municipalities (id)
+	,FOREIGN KEY (address_id) REFERENCES addresses (id)
+	,FOREIGN KEY (victim_gender_id) REFERENCES victim_genders (id)
+	,FOREIGN KEY (victim_age_id) REFERENCES victim_ages (id)
+	,FOREIGN KEY (cash_damage_id) REFERENCES cash_damages (id)
+);
