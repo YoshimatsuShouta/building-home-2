@@ -61,10 +61,10 @@ public class TownProcessor implements ItemProcessor<Address, Town> {
 			townMap.put(key, 0);
 
 			// 町域(丁目除く)のカナを作成(町域カナの丁目部分を取り除く)
-			Matcher matcherOfArabicForKana = patternOfArabic.matcher(addressNameKana);
+			Matcher matcherOfArabicForKana = patternOfArabic.matcher(addressNameKana == null ? "" : addressNameKana);
 			String townNameKana = matcherOfArabicForKana.replaceAll("");
 			// 町域(丁目除く)のローマ字を作成(町域ローマ字の丁目部分を取り除く)
-			Matcher matcherOfArabicForRome = patternOfArabic.matcher(addressNameRome);
+			Matcher matcherOfArabicForRome = patternOfArabic.matcher(addressNameRome == null ? "" : addressNameRome);
 			String townNameRome = matcherOfArabicForRome.replaceAll("");
 
 			Town town = Town.createTown(townName, townNameKana, townNameRome, address.getMunicipalityId());
