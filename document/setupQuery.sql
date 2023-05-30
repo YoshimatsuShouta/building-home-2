@@ -74,7 +74,7 @@ CREATE TABLE towns (
 	,FOREIGN KEY (municipality_id) REFERENCES municipalities (id)
 );
 --INDEX作成
-CREATE INDEX town_name_and_municipality_id towns(name,municipality_id);
+CREATE INDEX town_name_and_municipality_id ON towns (name,municipality_id);
 
 --テーブル名：choume
 --テーブル詳細：丁目情報
@@ -84,6 +84,8 @@ CREATE TABLE choume (
 	,town_id int NOT NULL
 	,address_id int NOT NULL
 	,name VARCHAR(50)
+	,name_kana VARCHAR(50)
+	,name_rome VARCHAR(50)
 	,registered_user TEXT NOT NULL
 	,registered_date_time TIMESTAMP NOT NULL
 	,updated_user TEXT NOT NULL
