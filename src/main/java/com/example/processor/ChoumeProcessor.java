@@ -29,6 +29,7 @@ public class ChoumeProcessor implements ItemProcessor<Address, Choume> {
 	public Choume process(Address address) throws Exception {
 		String addressName = address.getName();
 		Pattern patternOfKanji = Pattern.compile("([一二三四五六七八九]?[一二三四五六七八九十]?[一二三四五六七八九十]丁目)");
+		Pattern patternOfArabic = Pattern.compile("\\s([1-9]?[0-9])$");
 		Matcher matcherOfKanji = patternOfKanji.matcher(addressName);
 
 		String choumeName;
@@ -39,9 +40,15 @@ public class ChoumeProcessor implements ItemProcessor<Address, Choume> {
 		} else {
 			choumeName = null;
 		}
+		Matcher matcherOfNameKana = patternOfArabic.matcher(address.getNameKana() == null ? "" : address.getNameKana());
+		Matcher matcherOfnameRome = patternOfArabic.matcher(address.getNameRome() == null ? "" : address.getNameRome());
+		String choumeNameKana = matcherOfNameKana.find() ? matcherOfNameKana.group() : null;
+		String choumeNameRome = matcherOfnameRome.find() ? matcherOfnameRome.group() : null;
 		String townName = matcherOfKanji.replaceAll("");
 		choume.setTownId(service.getTownId(townName, address.getMunicipalityId()));
 		choume.setName(choumeName);
+		choume.setNameKana(choumeNameKana);
+		choume.setNameRome(choumeNameRome);
 		choume.setAddressId(address.getId());
 
 		return choume;
