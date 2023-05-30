@@ -43,6 +43,14 @@ public class Choume {
 	@Column(name = "name")
 	private String name;
 
+	/** 丁目名カナ */
+	@Column(name = "name_kana")
+	private String nameKana;
+
+	/** 丁目名ローマ字 */
+	@Column(name = "name_rome")
+	private String nameRome;
+
 	/** 登録ユーザー */
 	@Column(name = "registered_user")
 	private String registeredUser;
