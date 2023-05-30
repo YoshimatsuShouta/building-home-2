@@ -19,6 +19,7 @@ import com.example.domain.HittakuriOriginal;
 import com.example.domain.Municipality;
 import com.example.domain.Prefecture;
 import com.example.domain.Town;
+import com.example.listner.StepOfTownListner;
 import com.example.processor.ChoumeProcessor;
 import com.example.processor.HittakuriProcessor;
 import com.example.processor.PrefectureProcessor;
@@ -73,6 +74,8 @@ public class BatchConfig {
 	private TownProcessor townProcessor;
 	@Autowired
 	private TownWriter townWriter;
+	@Autowired
+	private StepOfTownListner stepOfTownListner;
 
 	@Autowired
 	private ChoumeProcessor choumeProcessor;
@@ -125,7 +128,8 @@ public class BatchConfig {
 	@Bean
 	Step stepOfTown(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
 		return new StepBuilder("stepOfTown", jobRepository).<Address, Town>chunk(1000, transactionManager)
-				.reader(addressReaderForCreateTown).processor(townProcessor).writer(townWriter).build();
+				.reader(addressReaderForCreateTown).processor(townProcessor).writer(townWriter)
+				.listener(stepOfTownListner).build();
 	}
 
 	@Bean
@@ -138,10 +142,17 @@ public class BatchConfig {
 	Job job(JobRepository jobRepository, Step stepOfPrefecture, Step stepOfMunicipality, Step stepOfAddress,
 			Step stepOfHittakuriTokyo2021, Step stepOfHittakuriTokyo2020, Step stepOfHittakuriTokyo2019,
 			Step stepOfTown, Step stepOfChoume) {
-		return new JobBuilder("job", jobRepository).incrementer(new RunIdIncrementer()).start(stepOfPrefecture)
-				.next(stepOfMunicipality).next(stepOfAddress).next(stepOfHittakuriTokyo2021)
-				.next(stepOfHittakuriTokyo2020).next(stepOfHittakuriTokyo2019).next(stepOfTown).next(stepOfChoume)
-				.build();
+		return new JobBuilder("job", jobRepository).incrementer(new RunIdIncrementer()).start(stepOfTown)
+				.next(stepOfChoume).build();
 	}
+//	@Bean
+//	Job job(JobRepository jobRepository, Step stepOfPrefecture, Step stepOfMunicipality, Step stepOfAddress,
+//			Step stepOfHittakuriTokyo2021, Step stepOfHittakuriTokyo2020, Step stepOfHittakuriTokyo2019,
+//			Step stepOfTown, Step stepOfChoume) {
+//		return new JobBuilder("job", jobRepository).incrementer(new RunIdIncrementer()).start(stepOfPrefecture)
+//				.next(stepOfMunicipality).next(stepOfAddress).next(stepOfHittakuriTokyo2021)
+//				.next(stepOfHittakuriTokyo2020).next(stepOfHittakuriTokyo2019).next(stepOfTown).next(stepOfChoume)
+//				.build();
+//	}
 
 }
