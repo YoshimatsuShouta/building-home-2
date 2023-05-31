@@ -30,5 +30,7 @@ public class Prefecture {
 	/** 都道府県名ローマ字 */
 	@Column(name = "name_rome")
 	private String nameRome;
+	@Column(name = "region_id")
+	private int regionId;
 
 }
