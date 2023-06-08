@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
 import com.example.domain.Prefecture;
 
 /**
-
- * Prefectureテーブルを作成するためのリーダー.
+ * OriginalテーブルからPrefectureオブジェクトを生成するリーダークラス.
  * 
  * @author sugaharatakamasa
  *
@@ -35,10 +34,13 @@ public class PrefectureReader implements ItemReader<Prefecture> {
 		prefecture.setNameRome(rs.getString("name_rome"));
 
 		return prefecture;
+
 	};
 
 	public PrefectureReader(DataSource dataSource) {
+
 		String sql = "SELECT DISTINCT prefectures_code AS id,prefectures AS name,prefectures_kana AS name_kana,prefectures_rome AS name_rome FROM original ORDER BY prefectures_code";
+
 		reader = new JdbcCursorItemReader<>();
 		reader.setDataSource(dataSource);
 		reader.setSql(sql);

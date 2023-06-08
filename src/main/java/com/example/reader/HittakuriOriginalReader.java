@@ -34,7 +34,6 @@ public class HittakuriOriginalReader implements ItemReader<HittakuriOriginal> {
 			"victimGender", "victimAge", "cashDamage" };
 
 	private static final String ENCORDING_TYPE = "shift_JIS";
-
 	private static final int LINES_TO_SKIP = 1;
 
 	public HittakuriOriginalReader(String classPath) {

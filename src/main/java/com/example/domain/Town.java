@@ -15,57 +15,36 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 /**
- * hittakuriテーブルの情報を保持するクラス.
+ * townsテーブルの情報を保持するクラス.
  * 
  * @author sugaharatakamasa
  *
  */
 @Data
 @Entity
-@Table(name = "hittakuri")
-public class Hittakuri {
+@Table(name = "towns")
+public class Town {
 
-	/** ひったくり事件ID */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	/** 事件発生日時 */
-	@Column(name = "event_date_time")
-	private LocalDateTime eventDateTime;
-
-	/** 都道府県ID(発生地) */
-	@Column(name = "prefecture_id")
-	private int prefectureId;
-
-	/** 市区町村ID(発生地) */
+	/** 市区町村ID */
 	@Column(name = "municipality_id")
 	private int municipalityId;
 
-	/** 町丁目ID(発生地) */
-	@Column(name = "address_id")
-	private int addressId;
+	/** 町域名(丁目を除く) */
+	@Column(name = "name")
+	private String name;
 
-	@Column(name = "police_station")
-	/** 管轄警察署(発生地) */
-	private String policeStation;
+	/** 町域名カナ(丁目を除く) */
+	@Column(name = "name_kana")
+	private String nameKana;
 
-	/** 管轄交番・駐在所(発生地) */
-	@Column(name = "police_box")
-	private String policeBox;
-
-	/** 被害者の性別ID */
-	@Column(name = "victim_gender_id")
-	private Integer victimGenderId;
-
-	/** 被害者の年齢ID */
-	@Column(name = "victim_age_id")
-	private Integer victimAgeId;
-
-	/** 現金被害の有無ID */
-	@Column(name = "cash_damage_id")
-	private Integer cashDamageId;
+	/** 町域名ローマ字(丁目を除く) */
+	@Column(name = "name_rome")
+	private String nameRome;
 
 	/** 登録ユーザー */
 	@Column(name = "registered_user")
@@ -94,6 +73,20 @@ public class Hittakuri {
 		this.registeredUser = "バッチ処理";
 		this.updatedUser = "バッチ処理";
 		this.deleted = false;
+	}
+	
+	public Town() {};
+	
+	private Town(String name ,String nameKana, String nameRome, int municipalityId) {
+		this.name = name;
+		this.nameKana = nameKana;
+		this.nameRome = nameRome;
+		this.municipalityId = municipalityId;
+	}
+	
+	public static Town createTown(String townName,String townNameKana, String townNameRome, int municipalityId) {
+		return new Town(townName, townNameKana, townNameRome, municipalityId);
+				
 	}
 
 }

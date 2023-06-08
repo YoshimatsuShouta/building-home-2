@@ -18,22 +18,32 @@ import com.example.domain.Hittakuri;
 import com.example.domain.HittakuriOriginal;
 import com.example.domain.Municipality;
 import com.example.domain.Prefecture;
+import com.example.domain.RailwayLine;
+import com.example.domain.RailwayLineOriginal;
+import com.example.domain.Station;
+import com.example.domain.StationOriginal;
 import com.example.domain.Town;
 import com.example.listner.StepOfTownListner;
 import com.example.processor.ChoumeProcessor;
 import com.example.processor.HittakuriProcessor;
 import com.example.processor.PrefectureProcessor;
+import com.example.processor.RailwayLineProcessor;
+import com.example.processor.StationProcessor;
 import com.example.processor.TownProcessor;
 import com.example.reader.AddressReader;
 import com.example.reader.AddressReaderForCreateTown;
 import com.example.reader.HittakuriOriginalReader;
 import com.example.reader.MunicipalityReader;
 import com.example.reader.PrefectureReader;
+import com.example.reader.RailwayLineOriginalReader;
+import com.example.reader.StationOriginalReader;
 import com.example.writer.AddressWriter;
 import com.example.writer.ChoumeWriter;
 import com.example.writer.HittakuriWriter;
 import com.example.writer.MunicipalityWriter;
 import com.example.writer.PrefectureWriter;
+import com.example.writer.RailwayLineWriter;
+import com.example.writer.StationWriter;
 import com.example.writer.TownWriter;
 
 /**
@@ -81,6 +91,16 @@ public class BatchConfig {
 	private ChoumeProcessor choumeProcessor;
 	@Autowired
 	private ChoumeWriter choumeWriter;
+
+	@Autowired
+	private RailwayLineProcessor railwayLineProcessor;
+	@Autowired
+	private RailwayLineWriter railwayLineWriter;
+
+	@Autowired
+	private StationProcessor stationProcessor;
+	@Autowired
+	private StationWriter stationWriter;
 
 	@Bean
 	Step stepOfPrefecture(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
@@ -139,11 +159,26 @@ public class BatchConfig {
 	}
 
 	@Bean
+	Step stepOfRailwayLine(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+		return new StepBuilder("stepOfRailwayLine", jobRepository)
+				.<RailwayLineOriginal, RailwayLine>chunk(1000, transactionManager)
+				.reader(new RailwayLineOriginalReader("/csv/railway/line20230327free.csv"))
+				.processor(railwayLineProcessor).writer(railwayLineWriter).build();
+	}
+
+	@Bean
+	Step stepOfStation(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+		return new StepBuilder("stepOfStation", jobRepository).<StationOriginal, Station>chunk(1000, transactionManager)
+				.reader(new StationOriginalReader("/csv/railway/station20230327free.csv")).processor(stationProcessor)
+				.writer(stationWriter).build();
+	}
+
+	@Bean
 	Job job(JobRepository jobRepository, Step stepOfPrefecture, Step stepOfMunicipality, Step stepOfAddress,
 			Step stepOfHittakuriTokyo2021, Step stepOfHittakuriTokyo2020, Step stepOfHittakuriTokyo2019,
-			Step stepOfTown, Step stepOfChoume) {
+			Step stepOfTown, Step stepOfChoume, Step stepOfRailwayLine, Step stepOfStation) {
 		return new JobBuilder("job", jobRepository).incrementer(new RunIdIncrementer()).start(stepOfTown)
-				.next(stepOfChoume).build();
+				.next(stepOfChoume).next(stepOfRailwayLine).next(stepOfStation).build();
 	}
 //	@Bean
 //	Job job(JobRepository jobRepository, Step stepOfPrefecture, Step stepOfMunicipality, Step stepOfAddress,

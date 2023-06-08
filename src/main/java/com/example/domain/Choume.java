@@ -15,57 +15,41 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 /**
- * hittakuriテーブルの情報を保持するクラス.
+ * chomeテーブルの情報を保持するクラス.
  * 
  * @author sugaharatakamasa
  *
  */
 @Data
 @Entity
-@Table(name = "hittakuri")
-public class Hittakuri {
+@Table(name = "choume")
+public class Choume {
 
-	/** ひったくり事件ID */
+	/** 丁目ID */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	/** 事件発生日時 */
-	@Column(name = "event_date_time")
-	private LocalDateTime eventDateTime;
+	/** 町域(丁目除く)ID */
+	@Column(name = "town_id")
+	private int townId;
 
-	/** 都道府県ID(発生地) */
-	@Column(name = "prefecture_id")
-	private int prefectureId;
-
-	/** 市区町村ID(発生地) */
-	@Column(name = "municipality_id")
-	private int municipalityId;
-
-	/** 町丁目ID(発生地) */
+	/** 町域ID */
 	@Column(name = "address_id")
 	private int addressId;
 
-	@Column(name = "police_station")
-	/** 管轄警察署(発生地) */
-	private String policeStation;
+	/** 丁目名 */
+	@Column(name = "name")
+	private String name;
 
-	/** 管轄交番・駐在所(発生地) */
-	@Column(name = "police_box")
-	private String policeBox;
+	/** 丁目名カナ */
+	@Column(name = "name_kana")
+	private String nameKana;
 
-	/** 被害者の性別ID */
-	@Column(name = "victim_gender_id")
-	private Integer victimGenderId;
-
-	/** 被害者の年齢ID */
-	@Column(name = "victim_age_id")
-	private Integer victimAgeId;
-
-	/** 現金被害の有無ID */
-	@Column(name = "cash_damage_id")
-	private Integer cashDamageId;
+	/** 丁目名ローマ字 */
+	@Column(name = "name_rome")
+	private String nameRome;
 
 	/** 登録ユーザー */
 	@Column(name = "registered_user")

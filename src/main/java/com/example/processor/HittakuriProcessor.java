@@ -13,7 +13,7 @@ import com.example.domain.HittakuriOriginal;
 import com.example.service.HittakuriService;
 
 /**
- * HittakuriOriginalオブジェクトをHittakuriオブジェクトに変換する業務処理を行うプロセッサクラス.
+ * HittakuriオブジェクトをHittakuriオブジェクトに変換する業務処理を行うプロセッサクラス.
  * 
  * @author sugaharatakamasa
  *
@@ -49,7 +49,6 @@ public class HittakuriProcessor implements ItemProcessor<HittakuriOriginal, Hitt
 		hittakuri.setCashDamageId(service.getCashDamageIdByCashDamage(hittakuriOriginal.getCashDamage()));
 
 		return hittakuri;
-
 	}
 
 }

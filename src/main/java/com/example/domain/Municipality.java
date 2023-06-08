@@ -33,8 +33,4 @@ public class Municipality {
 	/** 都道府県ID */
 	@Column(name = "prefecture_id")
 	private int prefectureId;
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/origin/deve
 }

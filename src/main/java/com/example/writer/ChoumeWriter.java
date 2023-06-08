@@ -6,29 +6,29 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.stereotype.Component;
 
-import com.example.domain.Address;
+import com.example.domain.Choume;
 
 import jakarta.persistence.EntityManagerFactory;
 
 /**
- * Addressオブジェクトをaddresseseテーブルに挿入するライタークラス.
+ * Choumeオブジェクトをchoumeテーブルに挿入するライタークラス.
  * 
  * @author sugaharatakamasa
  *
  */
 @Component
 @StepScope
-public class AddressWriter implements ItemWriter<Address> {
+public class ChoumeWriter implements ItemWriter<Choume> {
 
-	private JpaItemWriter<Address> writer;
+	private JpaItemWriter<Choume> writer;
 
-	public AddressWriter(EntityManagerFactory entityManagerFactory) {
+	public ChoumeWriter(EntityManagerFactory entityManagerFactory) {
 		writer = new JpaItemWriter<>();
 		writer.setEntityManagerFactory(entityManagerFactory);
 	}
 
 	@Override
-	public void write(Chunk<? extends Address> chunk) throws Exception {
+	public void write(Chunk<? extends Choume> chunk) throws Exception {
 		writer.write(chunk);
 
 	}
