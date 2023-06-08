@@ -7,4 +7,7 @@ spring:
     password: postgres
   batch:
     jdbc:
-      initialize-schema: embedded
+      initialize-schema: always
+  jpa:
+    hibernate:
+      ddl-auto: update

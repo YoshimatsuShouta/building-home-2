@@ -21,7 +21,7 @@ public class AddressRepository {
 	public void insertToAddress(List<Original> originalList) {
 		Connection con = SampleDBManager.createConnection();
 
-		String sql = "INSERT INTO addresses (name, name_kana, name_rome, latitude, longitude, prefecture_id, municipality_id) SELECT ?, ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT name FROM address WHERE name = ? AND prefecture_id = ? AND municipality_id = ?);";
+		String sql = "INSERT INTO addresses (name, name_kana, name_rome, latitude, longitude, prefecture_id, municipality_id) SELECT ?, ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT name FROM addresses WHERE name = ? AND prefecture_id = ? AND municipality_id = ?);";
 
 		try {
 			PreparedStatement pstmt = con.prepareStatement(sql);
