@@ -70,7 +70,7 @@ CREATE TABLE price_of_lands (
   	neighborhood_usage TEXT,
   	info_year INTEGER NOT NULL,
   	FOREIGN KEY (municipality_id) REFERENCES municipalities (id),
-  	FOREIGN KEY (address_id) REFERENCES address (id),
+  	FOREIGN KEY (address_id) REFERENCES addresses (id),
   	FOREIGN KEY (usage_id) REFERENCES usages (id),
   	FOREIGN KEY (nearest_station_id) REFERENCES nearest_stations (id)
 );
@@ -172,3 +172,30 @@ CREATE TABLE hittakuri (
 	,FOREIGN KEY (victim_age_id) REFERENCES victim_ages (id)
 	,FOREIGN KEY (cash_damage_id) REFERENCES cash_damages (id)
 );
+
+--テーブル名 : railways
+--テーブル詳細 : 沿線情報
+DROP TABLE IF EXISTS railway_lines CASCADE;
+CREATE TABLE railway_lines (
+	id INTEGER PRIMARY KEY,
+	company_id INTEGER NOT NULL,
+	line_name VARCHAR(50) NOT NULL,
+	line_name_k VARCHAR(50),
+	line_name_h VARCHAR(50),
+	longitude DOUBLE PRECISION,
+	latitude DOUBLE PRECISION
+	);
+
+--テーブル名 : stations
+--テーブル詳細 : 駅情報
+DROP TABLE IF EXISTS stations CASCADE;
+CREATE TABLE stations (
+	id INTEGER PRIMARY KEY,
+	station_name VARCHAR(50) NOT NULL,
+	line_id INTEGER NOT NULL,
+	post VARCHAR(50),
+	address VARCHAR(50),
+	longitude DOUBLE PRECISION,
+	latitude DOUBLE PRECISION,
+	FOREIGN KEY (line_id) REFERENCES railway_lines (id)
+	);

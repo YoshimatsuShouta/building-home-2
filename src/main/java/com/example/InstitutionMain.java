@@ -164,7 +164,7 @@ public class InstitutionMain {
 	 * @throws SQLException
 	 */
 	public static Map<String, Integer> addressToMap(Connection con) throws SQLException {
-		PreparedStatement pstmt = con.prepareStatement("SELECT id,name  FROM address WHERE prefecture_id = 13;");
+		PreparedStatement pstmt = con.prepareStatement("SELECT id,name  FROM addresses WHERE prefecture_id = 13;");
 		ResultSet rs = pstmt.executeQuery();
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		while (rs.next()) {

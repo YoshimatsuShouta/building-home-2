@@ -104,7 +104,7 @@ public class PriceOfLandRepository {
 		Connection con = SampleDBManager.createConnection();
 
 		String sql = "INSERT INTO price_of_lands (municipality_id, address_id, address_num, current_price, previos_price, change_previos_price, acreage, nearest_station_id, usage_id, neighborhood_usage, info_year)"
-				+ " SELECT ?, (SELECT id from address where municipality_id = ? AND name LIKE ? LIMIT 1), ?, ?, ?, ?, ?, (Select id From nearest_stations Where name = ?), (SELECT id FROM usages WHERE usage_text = ?), ?, ? ;";
+				+ " SELECT ?, (SELECT id from addresses where municipality_id = ? AND name LIKE ? LIMIT 1), ?, ?, ?, ?, ?, (Select id From nearest_stations Where name = ?), (SELECT id FROM usages WHERE usage_text = ?), ?, ? ;";
 
 		try {
 			PreparedStatement pstmt = con.prepareStatement(sql);

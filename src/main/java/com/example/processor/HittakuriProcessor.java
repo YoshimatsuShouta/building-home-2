@@ -13,7 +13,7 @@ import com.example.domain.HittakuriOriginal;
 import com.example.service.HittakuriService;
 
 /**
- * HittakuriオブジェクトをHittakuriオブジェクトに変換する業務処理を行うプロセッサクラス.
+ * HittakuriOriginalオブジェクトをHittakuriオブジェクトに変換する業務処理を行うプロセッサクラス.
  * 
  * @author sugaharatakamasa
  *

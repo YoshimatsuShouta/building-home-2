@@ -17,17 +17,25 @@ import com.example.domain.Hittakuri;
 import com.example.domain.HittakuriOriginal;
 import com.example.domain.Municipality;
 import com.example.domain.Prefecture;
-import com.example.listner.PrefectureRederListner;
-import com.example.listner.PrefectureStepListner;
+import com.example.domain.RailwayLine;
+import com.example.domain.RailwayLineOriginal;
+import com.example.domain.Station;
+import com.example.domain.StationOriginal;
 import com.example.processor.HittakuriProcessor;
+import com.example.processor.RailwayLineProcessor;
+import com.example.processor.StationProcessor;
 import com.example.reader.AddressReader;
 import com.example.reader.HittakuriOriginalReader;
 import com.example.reader.MunicipalityReader;
 import com.example.reader.PrefectureReader;
+import com.example.reader.RailwayLineOriginalReader;
+import com.example.reader.StationOriginalReader;
 import com.example.writer.AddressWriter;
 import com.example.writer.HittakuriWriter;
 import com.example.writer.MunicipalityWriter;
 import com.example.writer.PrefectureWriter;
+import com.example.writer.RailwayLineWriter;
+import com.example.writer.StationWriter;
 
 /**
  * バッチ処理の設定を行うクラス.
@@ -58,6 +66,16 @@ public class BatchConfig {
 	private HittakuriProcessor hittakuriProcessor;
 	@Autowired
 	private HittakuriWriter hittakuriWriter;
+
+	@Autowired
+	private RailwayLineProcessor railwayLineProcessor;
+	@Autowired
+	private RailwayLineWriter railwayLineWriter;
+
+	@Autowired
+	private StationProcessor stationProcessor;
+	@Autowired
+	private StationWriter stationWriter;
 
 	@Bean
 	Step stepOfPrefecture(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
@@ -103,11 +121,28 @@ public class BatchConfig {
 	}
 
 	@Bean
+	Step stepOfRailwayLine(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+		return new StepBuilder("stepOfRailwayLine", jobRepository)
+				.<RailwayLineOriginal, RailwayLine>chunk(1000, transactionManager)
+				.reader(new RailwayLineOriginalReader("/csv/railway/line20230327free.csv"))
+				.processor(railwayLineProcessor).writer(railwayLineWriter).build();
+	}
+
+	@Bean
+	Step stepOfStation(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+		return new StepBuilder("stepOfStation", jobRepository).<StationOriginal, Station>chunk(1000, transactionManager)
+				.reader(new StationOriginalReader("/csv/railway/station20230327free.csv")).processor(stationProcessor)
+				.writer(stationWriter).build();
+	}
+
+	@Bean
 	Job job(JobRepository jobRepository, Step stepOfPrefecture, Step stepOfMunicipality, Step stepOfAddress,
-			Step stepOfHittakuriTokyo2021, Step stepOfHittakuriTokyo2020, Step stepOfHittakuriTokyo2019) {
+			Step stepOfHittakuriTokyo2021, Step stepOfHittakuriTokyo2020, Step stepOfHittakuriTokyo2019,
+			Step stepOfRailwayLine, Step stepOfStation) {
 		return new JobBuilder("job", jobRepository).incrementer(new RunIdIncrementer()).start(stepOfPrefecture)
 				.next(stepOfMunicipality).next(stepOfAddress).next(stepOfHittakuriTokyo2021)
-				.next(stepOfHittakuriTokyo2020).next(stepOfHittakuriTokyo2019).build();
+				.next(stepOfHittakuriTokyo2020).next(stepOfHittakuriTokyo2019).next(stepOfRailwayLine)
+				.next(stepOfStation).build();
 	}
 
 }
