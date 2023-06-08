@@ -17,18 +17,19 @@ CREATE TABLE original (
 	Longitude double precision,
 	CONSTRAINT original_PKC PRIMARY KEY (id)
 );
+
+
 -- prefectures（都道府県）テーブルの作成
 DROP TABLE IF EXISTS prefectures CASCADE;
 CREATE TABLE prefectures (
   id INT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   name_kana VARCHAR(255),
-  name_rome VARCHAR(255)
+  name_rome VARCHAR(255),
+	region_id INTEGER NOT NULL,
+	FOREIGN KEY (region_id) REFERENCES regions(id)
 );
 
--- price_of_lands
-DROP TABLE IF EXISTS price_of_lands CASCADE;
-CREATE TABLE price_of_lands (
 -- municipalities（市町村）テーブルの作成
 DROP TABLE IF EXISTS municipalities CASCADE;
 CREATE TABLE municipalities (
@@ -40,41 +41,10 @@ CREATE TABLE municipalities (
   FOREIGN KEY (prefecture_id) REFERENCES prefectures(id)
 );
 
--- address（住所）テーブルの作成 
-DROP TABLE IF EXISTS address CASCADE;
-	CREATE TABLE address (
+-- addresses（住所）テーブルの作成 
+DROP TABLE IF EXISTS addresses CASCADE;
+CREATE TABLE addresses (
 	id serial NOT NULL,
-
-  	municipality_id INTEGER NOT NULL,
-  	address_id INTEGER NOT NULL,
-  	address_num VARCHAR(255) NOT NULL,
-  	current_price INTEGER NOT NULL,
-  	previos_price INTEGER,
-  	change_previos_price DOUBLE PRECISION,
-  	acreage INTEGER,
-  	nearest_station_id INTEGER,
-  	usage_id INTEGER,
-  	neighborhood_usage TEXT,
-  	info_year INTEGER NOT NULL,
-  	FOREIGN KEY (municipality_id) REFERENCES municipalities (id),
-  	FOREIGN KEY (address_id) REFERENCES addresses (id),
-  	FOREIGN KEY (usage_id) REFERENCES usages (id),
-  	FOREIGN KEY (nearest_station_id) REFERENCES nearest_stations (id)
-);
-
--- usages
-CREATE TABLE usages (
-	id serial NOT NULL,
-	usage_text text,
-	CONSTRAINT usage_PKC PRIMARY KEY (id) 
-);
-
--- nearest_stations
-DROP TABLE IF EXISTS nearest_stations CASCADE;
-CREATE TABLE nearest_stations (
-	id serial NOT NULL,
-	name VARCHAR(255),
-	CONSTRAINT nearest_stations_PKC PRIMARY KEY (id) 
 	name character varying (255),
 	name_kana character varying (255),
 	name_rome character varying (255),
@@ -87,60 +57,44 @@ CREATE TABLE nearest_stations (
 	FOREIGN KEY (municipality_id) REFERENCES municipalities (id)
 );
 
--- institution 
-	CREATE TABLE institution (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(255),
-	longitude DECIMAL (9,6),
-	latitude DECIMAL (9,6),
-	available_days VARCHAR(255),
-	start_time VARCHAR(255),
-	end_time VARCHAR(255),
-	phone_number VARCHAR(20),
-	address VARCHAR(255),
-	postal_code VARCHAR(10),
-	tag_id INTEGER NOT NULL,
-	municipalities_id INTEGER NOT NULL,
-	FOREIGN KEY (municipalities_id) REFERENCES municipalities (id)
+--テーブル名：towns
+--テーブル詳細：町域情報(丁目を除く)
+DROP TABLE IF EXISTS towns CASCADE;
+CREATE TABLE towns (
+	id SERIAL PRIMARY KEY
+	,municipality_id INTEGER NOT NULL
+	,name VARCHAR(50) NOT NULL
+	,name_kana VARCHAR(50) 
+	,name_rome VARCHAR(50)
+	,registered_user TEXT NOT NULL
+	,registered_date_time TIMESTAMP NOT NULL
+	,updated_user TEXT NOT NULL
+	,updated_date_time TIMESTAMP NOT NULL
+	,deleted BOOLEAN NOT NULL
+	,FOREIGN KEY (municipality_id) REFERENCES municipalities (id)
+);
+--INDEX作成
+CREATE INDEX town_name_and_municipality_id ON towns (name,municipality_id);
+
+--テーブル名：choume
+--テーブル詳細：丁目情報
+DROP TABLE IF EXISTS choume CASCADE;
+CREATE TABLE choume (
+	id SERIAL PRIMARY KEY
+	,town_id int NOT NULL
+	,address_id int NOT NULL
+	,name VARCHAR(50)
+	,name_kana VARCHAR(50)
+	,name_rome VARCHAR(50)
+	,registered_user TEXT NOT NULL
+	,registered_date_time TIMESTAMP NOT NULL
+	,updated_user TEXT NOT NULL
+	,updated_date_time TIMESTAMP NOT NULL
+	,deleted BOOLEAN NOT NULL
+	,FOREIGN KEY (town_id) REFERENCES towns (id)
+	,FOREIGN KEY (address_id) REFERENCES addresses (id)
 );
 
-
---テーブル名：victim_ages
---テーブル詳細：犯罪被害者の年齢情報
-DROP TABLE IF EXISTS victim_ages CASCADE;
-CREATE TABLE victim_ages (
-	id INTEGER PRIMARY KEY
-	,VALUE VARCHAR(50) NOT NULL
-);
-INSERT INTO victim_ages (id,value) VALUES
-(1,'10歳未満')
-,(2,'10歳代')
-,(3,'20歳代')
-,(4,'30歳代')
-,(5,'40歳代')
-,(6,'50歳代')
-,(7,'60-64歳')
-,(8,'65-69歳')
-,(9,'70歳以上')
-,(10,'法人・団体、被害者なし');
-
---テーブル名：victim_genders
---テーブル詳細：犯罪被害者の性別情報
-DROP TABLE IF EXISTS victim_genders CASCADE;
-CREATE TABLE victim_genders (
-	id INTEGER PRIMARY KEY
-	,VALUE VARCHAR(50) NOT NULL
-);
-INSERT INTO victim_genders (id,VALUE) VALUES (1,'男性'),(2,'女性'),(3,'法人・団体');
-
---テーブル名：cash_damages
---テーブル詳細：現金被害の有無
-DROP TABLE IF EXISTS cash_damages CASCADE;
-CREATE TABLE cash_damages (
-	id INTEGER PRIMARY KEY
-	,VALUE VARCHAR(50) NOT NULL
-);
-INSERT INTO cash_damages (id,VALUE) VALUES (1,'あり'),(2,'なし');
 
 
 --テーブル名：hittakuri
@@ -170,105 +124,61 @@ CREATE TABLE hittakuri (
 	,FOREIGN KEY (cash_damage_id) REFERENCES cash_damages (id)
 );
 
---テーブル名 : railways
---テーブル詳細 : 沿線情報
-DROP TABLE IF EXISTS railway_lines CASCADE;
-CREATE TABLE railway_lines (
-	id INTEGER PRIMARY KEY,
-	company_id INTEGER NOT NULL,
-	line_name VARCHAR(50) NOT NULL,
-	line_name_k VARCHAR(50),
-	line_name_h VARCHAR(50),
-	longitude DOUBLE PRECISION,
-	latitude DOUBLE PRECISION
-	);
 
---テーブル名 : stations
---テーブル詳細 : 駅情報
-DROP TABLE IF EXISTS stations CASCADE;
-CREATE TABLE stations (
-	id INTEGER PRIMARY KEY,
-	station_name VARCHAR(50) NOT NULL,
-	line_id INTEGER NOT NULL,
-	post VARCHAR(50),
-	address VARCHAR(50),
-	longitude DOUBLE PRECISION,
-	latitude DOUBLE PRECISION,
-	FOREIGN KEY (line_id) REFERENCES railway_lines (id)
-	);
--- price_of_land
-DROP TABLE IF EXISTS price_of_land CASCADE;
-CREATE TABLE price_of_land (
+
+---------------------------地価情報------------------------------------
+
+-- price_of_lands
+DROP TABLE IF EXISTS price_of_lands CASCADE;
+CREATE TABLE price_of_lands (
 	id serial NOT NULL,
-	municipality_id INTEGER NOT NULL,
-	address_id INTEGER NOT NULL,
-	address_num VARCHAR(255) NOT NULL,
-	current_price INTEGER NOT NULL,
-	previos_price INTEGER,
-	change_previos_price DOUBLE PRECISION,
-	acreage INTEGER,
-	nearest_station VARCHAR(255),
-	usage TEXT,
-	neighborhood_usage TEXT,
-	info_year INTEGER NOT NULL,
-	FOREIGN KEY (municipality_id) REFERENCES municipalities (id),
-	FOREIGN KEY (address_id) REFERENCES address (id)
+  municipality_id INTEGER NOT NULL,
+  address_id INTEGER NOT NULL,
+  address_num VARCHAR(255) NOT NULL,
+  current_price INTEGER NOT NULL,
+  previos_price INTEGER,
+  change_previos_price DOUBLE PRECISION,
+  acreage INTEGER,
+  nearest_station_id INTEGER,
+  usage_id INTEGER,
+  neighborhood_usage TEXT,
+  info_year INTEGER NOT NULL,
+  FOREIGN KEY (municipality_id) REFERENCES municipalities (id),
+  FOREIGN KEY (address_id) REFERENCES address (id),
+  FOREIGN KEY (usage_id) REFERENCES usages (id),
+  FOREIGN KEY (nearest_station_id) REFERENCES nearest_stations (id)
 );
 
---テーブル名：hittakuri
---テーブル詳細：ひったくり情報
-DROP TABLE IF EXISTS hittakuri CASCADE;
-CREATE TABLE hittakuri (
-  id SERIAL PRIMARY KEY
-  ,date_incident TIMESTAMP NOT NULL
-  ,police_station VARCHAR(50) 
-  ,police_box VARCHAR(50)
-  ,address_id INTEGER NOT NULL
-  ,victim_gender_id INTEGER NOT NULL
-  ,victim_age_id INTEGER NOT NULL
-  ,cash_damage_id INTEGER NOT NULL
-  ,registered_user TEXT NOT NULL
-  ,registered_date_time TIMESTAMP NOT NULL
-  ,updated_user TEXT NOT NULL
-  ,updated_date_time TIMESTAMP NOT NULL
-  ,deleted BOOLEAN NOT NULL 
-  ,FOREIGN KEY(address_id) REFERENCES address(id)
+-- usages
+DROP TABLE 
+CREATE TABLE usages (
+	id serial NOT NULL,
+	usage_text text,
+	CONSTRAINT usage_PKC PRIMARY KEY (id) 
 );
 
---テーブル名:victim_genders
---テーブル詳細:被害者の性別情報
-DROP TABLE IF EXISTS genders CASCADE;
-CREATE TABLE genders (
-	id INTEGER PRIMARY KEY
-	,value VARCHAR(20) NOT NULL
+-- nearest_stations
+DROP TABLE IF EXISTS nearest_stations CASCADE;
+CREATE TABLE nearest_stations (
+	id serial NOT NULL,
+	name VARCHAR(255),
+	CONSTRAINT nearest_stations_PKC PRIMARY KEY (id) 
 );
-INSERT INTO genders (id,value) VALUES (1,'男性'),(2,'女性'),(3,'その他');
 
---テーブル名:victim_ages
---テーブル詳細:被害者の年齢情報
-DROP TABLE IF EXISTS victim_ages CASCADE;
-CREATE TABLE victim_ages (
-	id INTEGER PRIMARY KEY
-	,value VARCHAR(50) NOT NULL
+-- institution 
+DROP TABLE IF EXISTS institution CASCADE;
+CREATE TABLE institution (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255),
+	longitude DECIMAL (9,6),
+	latitude DECIMAL (9,6),
+	available_days VARCHAR(255),
+	start_time VARCHAR(255),
+	end_time VARCHAR(255),
+	phone_number VARCHAR(20),
+	address VARCHAR(255),
+	postal_code VARCHAR(10),
+	tag_id INTEGER NOT NULL,
+	municipalities_id INTEGER NOT NULL,
+	FOREIGN KEY (municipalities_id) REFERENCES municipalities (id)
 );
-INSERT INTO victim_ages (id,value) VALUES
-(1,'10歳未満')
-,(2,'10歳代')
-,(3,'20歳代')
-,(4,'30歳代')
-,(5,'40歳代')
-,(6,'50歳代')
-,(7,'60-64歳')
-,(8,'65-69歳')
-,(9,'70歳以上')
-,(10,'法人・団体、被害者なし');
-
---テーブル名:cash_damages
---テーブル詳細:現金被害の有無
-DROP TABLE IF EXISTS cash_damages CASCADE;
-CREATE TABLE cash_damages (
-	id INTEGER PRIMARY KEY
-	,value VARCHAR(50) NOT NULL
-);
-INSERT INTO cash_damages (id,value) VALUES (1,'あり'),(2,'なし'),(3,'その他');
-
