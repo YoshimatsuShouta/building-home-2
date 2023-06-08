@@ -50,6 +50,7 @@ public class AddressReader implements ItemReader<Address> {
 		reader.setRowMapper(ROW_MAPPER);
 		reader.setSaveState(true);
 		reader.open(new ExecutionContext());
+
 	}
 
 	@Override

@@ -49,6 +49,7 @@ public class HittakuriProcessor implements ItemProcessor<HittakuriOriginal, Hitt
 		hittakuri.setCashDamageId(service.getCashDamageIdByCashDamage(hittakuriOriginal.getCashDamage()));
 
 		return hittakuri;
+
 	}
 
 }

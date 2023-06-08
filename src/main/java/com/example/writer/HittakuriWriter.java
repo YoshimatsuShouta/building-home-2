@@ -29,6 +29,7 @@ public class HittakuriWriter implements ItemWriter<Hittakuri> {
 
 	@Override
 	public void write(Chunk<? extends Hittakuri> chunk) throws Exception {
+
 		writer.write(chunk);
 
 	}

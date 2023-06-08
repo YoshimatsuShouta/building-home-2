@@ -31,6 +31,7 @@ public class Hittakuri {
 	@Column(name = "id")
 	private int id;
 
+<<<<<<< HEAD
 	/** 事件発生日時 */
 	@Column(name = "event_date_time")
 	private LocalDateTime eventDateTime;
@@ -54,6 +55,23 @@ public class Hittakuri {
 	/** 管轄交番・駐在所(発生地) */
 	@Column(name = "police_box")
 	private String policeBox;
+=======
+	/** 発生日時 */
+	@Column(name = "date_incident")
+	private LocalDateTime incidentDateTime;
+
+	/** 管轄警察署 */
+	@Column(name = "police_station")
+	private String policeStation;
+
+	/** 管轄交番 */
+	@Column(name = "police_box")
+	private String policeBox;
+
+	/** 住所ID */
+	@Column(name = "address_id")
+	private Integer addressId;
+>>>>>>> refs/remotes/origin/deve
 
 	/** 被害者の性別ID */
 	@Column(name = "victim_gender_id")

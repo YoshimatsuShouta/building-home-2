@@ -31,4 +31,5 @@ public class PrefectureWriter implements ItemWriter<Prefecture> {
 	public void write(Chunk<? extends Prefecture> chunk) throws Exception {
 		writer.write(chunk);
 	}
+
 }
