@@ -32,4 +32,5 @@ public class MunicipalityWriter implements ItemWriter<Municipality> {
 		writer.write(chunk);
 	}
 
+
 }

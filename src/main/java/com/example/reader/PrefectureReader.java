@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.example.domain.Prefecture;
 
 /**
- * 
+
  * Prefectureテーブルを作成するためのリーダー.
  * 
  * @author sugaharatakamasa
