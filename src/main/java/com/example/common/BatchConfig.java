@@ -17,18 +17,18 @@ import com.example.domain.Choume;
 import com.example.domain.Hittakuri;
 import com.example.domain.HittakuriOriginal;
 import com.example.domain.Municipality;
-import com.example.domain.Prefecture;<<<<<<<HEAD
+import com.example.domain.Prefecture;
 import com.example.domain.RailwayLine;
 import com.example.domain.RailwayLineOriginal;
 import com.example.domain.Station;
-import com.example.domain.StationOriginal;=======>>>>>>>refs/remotes/origin/develop
+import com.example.domain.StationOriginal;
 import com.example.domain.Town;
 import com.example.listner.StepOfTownListner;
 import com.example.processor.ChoumeProcessor;
 import com.example.processor.HittakuriProcessor;
-import com.example.processor.PrefectureProcessor;<<<<<<<HEAD
+import com.example.processor.PrefectureProcessor;
 import com.example.processor.RailwayLineProcessor;
-import com.example.processor.StationProcessor;=======>>>>>>>refs/remotes/origin/develop
+import com.example.processor.StationProcessor;
 import com.example.processor.TownProcessor;
 import com.example.reader.AddressReader;
 import com.example.reader.AddressReaderForCreateTown;
@@ -41,9 +41,9 @@ import com.example.writer.AddressWriter;
 import com.example.writer.ChoumeWriter;
 import com.example.writer.HittakuriWriter;
 import com.example.writer.MunicipalityWriter;
-import com.example.writer.PrefectureWriter;<<<<<<<HEAD
+import com.example.writer.PrefectureWriter;
 import com.example.writer.RailwayLineWriter;
-import com.example.writer.StationWriter;=======>>>>>>>refs/remotes/origin/develop
+import com.example.writer.StationWriter;
 import com.example.writer.TownWriter;
 
 /**
@@ -92,7 +92,6 @@ public class BatchConfig {
 	@Autowired
 	private ChoumeWriter choumeWriter;
 
-<<<<<<< HEAD
 	@Autowired
 	private RailwayLineProcessor railwayLineProcessor;
 	@Autowired
@@ -103,8 +102,6 @@ public class BatchConfig {
 	@Autowired
 	private StationWriter stationWriter;
 
-=======
->>>>>>> refs/remotes/origin/develop
 	@Bean
 	Step stepOfPrefecture(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
 		return new StepBuilder("stepOfPrefecture", jobRepository).<Prefecture, Prefecture>chunk(50, transactionManager)
