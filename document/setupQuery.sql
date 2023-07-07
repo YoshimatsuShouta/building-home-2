@@ -162,6 +162,7 @@ DROP TABLE IF EXISTS nearest_stations CASCADE;
 CREATE TABLE nearest_stations (
 	id serial NOT NULL,
 	name VARCHAR(255),
+	station_id INTEGER
 	CONSTRAINT nearest_stations_PKC PRIMARY KEY (id) 
 );
 

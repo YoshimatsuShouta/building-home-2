@@ -62,18 +62,20 @@ public class PriceOfLandRepository {
 	public void insertToNearestStations(List<PriceOfLand> priceOfLandList) {
 		Connection con = SampleDBManager.createConnection();
 
-		String sql = "INSERT INTO nearest_stations (name) SELECT ? WHERE NOT EXISTS (SELECT id FROM nearest_stations WHERE name = ?)";
+		String sql = "INSERT INTO nearest_stations (name,station_id) SELECT ?,	(SELECT s.id FROM stations AS s WHERE s.station_name = ? LIMIT 1) WHERE NOT EXISTS (SELECT id FROM nearest_stations WHERE name = ?);";
 		try {
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			int cnt = 0; // listが回った回数を一時記録する
 			int listCnt = priceOfLandList.size(); // listの件数を一時記録する
 			// listの行数文for文を回す
 			for (PriceOfLand priceOfLand : priceOfLandList) {
-
+				String priceOfLandName = priceOfLand.getNearestStation().replaceAll(" ", "").replaceAll("　", "");
 //				// SQLの 「?」 の部分にそれぞれ値をセットする
-				pstmt.setString(1, priceOfLand.getNearestStation());
+				pstmt.setString(1, priceOfLandName);
 
-				pstmt.setString(2, priceOfLand.getNearestStation());
+				pstmt.setString(2, priceOfLandName);
+
+				pstmt.setString(3, priceOfLandName);
 
 				pstmt.addBatch();// 一行毎の情報を溜める
 				cnt++;
