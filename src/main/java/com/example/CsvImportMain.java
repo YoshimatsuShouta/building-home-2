@@ -8,6 +8,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.domain.Original;
+
 /**
  * csvデータを読み込みオリジナルテーブルに挿入するメイン.
  * 

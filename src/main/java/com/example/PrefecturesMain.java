@@ -2,6 +2,8 @@ package com.example;
 
 import java.util.List;
 
+import com.example.domain.Original;
+
 /**
  * 住所、市区町村、都道府県テーブルに情報を挿入するメイン.
  * 

@@ -16,34 +16,49 @@ import com.example.domain.Address;
 import com.example.domain.Choume;
 import com.example.domain.Hittakuri;
 import com.example.domain.HittakuriOriginal;
+import com.example.domain.Institutions;
+import com.example.domain.InstitutionsOriginal;
 import com.example.domain.Municipality;
+import com.example.domain.Original;
+import com.example.domain.OriginalOriginal;
 import com.example.domain.Prefecture;
 import com.example.domain.RailwayLine;
 import com.example.domain.RailwayLineOriginal;
 import com.example.domain.Station;
 import com.example.domain.StationOriginal;
+import com.example.domain.TagSpecies;
+import com.example.domain.TagSpeciesOriginal;
 import com.example.domain.Town;
 import com.example.listner.StepOfTownListner;
 import com.example.processor.ChoumeProcessor;
 import com.example.processor.HittakuriProcessor;
+import com.example.processor.InstitutionsProcessor;
+import com.example.processor.OriginalProcessor;
 import com.example.processor.PrefectureProcessor;
 import com.example.processor.RailwayLineProcessor;
 import com.example.processor.StationProcessor;
+import com.example.processor.TagSpeciesProcessor;
 import com.example.processor.TownProcessor;
 import com.example.reader.AddressReader;
 import com.example.reader.AddressReaderForCreateTown;
 import com.example.reader.HittakuriOriginalReader;
+import com.example.reader.InstitutionsOriginalReader;
 import com.example.reader.MunicipalityReader;
+import com.example.reader.OriginalOriginalReader;
 import com.example.reader.PrefectureReader;
 import com.example.reader.RailwayLineOriginalReader;
 import com.example.reader.StationOriginalReader;
+import com.example.reader.TagSpeciesOriginalReader;
 import com.example.writer.AddressWriter;
 import com.example.writer.ChoumeWriter;
 import com.example.writer.HittakuriWriter;
+import com.example.writer.InstitutionsWriter;
 import com.example.writer.MunicipalityWriter;
+import com.example.writer.OriginalWriter;
 import com.example.writer.PrefectureWriter;
 import com.example.writer.RailwayLineWriter;
 import com.example.writer.StationWriter;
+import com.example.writer.TagSpeciesWriter;
 import com.example.writer.TownWriter;
 
 /**
@@ -101,6 +116,21 @@ public class BatchConfig {
 	private StationProcessor stationProcessor;
 	@Autowired
 	private StationWriter stationWriter;
+
+	@Autowired
+	private OriginalProcessor originalProcessor;
+	@Autowired
+	private OriginalWriter originalWriter;
+
+	@Autowired
+	private TagSpeciesProcessor tagSpeciesProcessor;
+	@Autowired
+	private TagSpeciesWriter tagSpeciesWriter;
+
+	@Autowired
+	private InstitutionsProcessor institutionsProcessor;
+	@Autowired
+	private InstitutionsWriter institutionsWriter;
 
 	@Bean
 	Step stepOfPrefecture(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
@@ -174,13 +204,41 @@ public class BatchConfig {
 	}
 
 	@Bean
+	Step stepOfOriginal(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+		return new StepBuilder("stepOfOriginal", jobRepository)
+				.<OriginalOriginal, Original>chunk(1000, transactionManager)
+				.reader(new OriginalOriginalReader("latest.csv")).processor(originalProcessor).writer(originalWriter)
+				.build();
+	}
+
+	@Bean
+	Step stepOfInstitutions(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+		return new StepBuilder("stepOfInstitutions", jobRepository)
+				.<InstitutionsOriginal, Institutions>chunk(1000, transactionManager)
+				.reader(new InstitutionsOriginalReader("130001_public_facility.csv")).processor(institutionsProcessor)
+				.writer(institutionsWriter).build();
+	}
+
+	@Bean
+	Step stepOfTagSpecies(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+		return new StepBuilder("stepOfTagSpecies", jobRepository)
+				.<TagSpeciesOriginal, TagSpecies>chunk(1000, transactionManager)
+				.reader(new TagSpeciesOriginalReader("POIコード.csv")).processor(tagSpeciesProcessor)
+				.writer(tagSpeciesWriter).build();
+	}
+
+	@Bean
 	Job job(JobRepository jobRepository, Step stepOfPrefecture, Step stepOfMunicipality, Step stepOfAddress,
 			Step stepOfHittakuriTokyo2021, Step stepOfHittakuriTokyo2020, Step stepOfHittakuriTokyo2019,
-			Step stepOfTown, Step stepOfChoume, Step stepOfRailwayLine, Step stepOfStation) {
-		return new JobBuilder("job", jobRepository).incrementer(new RunIdIncrementer()).start(stepOfTown)
-				.next(stepOfChoume).next(stepOfRailwayLine).next(stepOfStation).build();
+			Step stepOfTown, Step stepOfChoume, Step stepOfRailwayLine, Step stepOfStation, Step stepOfOriginal,
+			Step stepOfTagSpecies, Step stepOfInstitutions) {
+		return new JobBuilder("job", jobRepository).incrementer(new RunIdIncrementer()).start(stepOfOriginal)
+				.next(stepOfTagSpecies).next(stepOfInstitutions).next(stepOfStation).next(stepOfPrefecture)
+				.next(stepOfMunicipality).next(stepOfAddress).next(stepOfTown).next(stepOfChoume)
+				.next(stepOfRailwayLine).build();
 
 	}
+
 //	@Bean
 //	Job job(JobRepository jobRepository, Step stepOfPrefecture, Step stepOfMunicipality, Step stepOfAddress,
 //			Step stepOfHittakuriTokyo2021, Step stepOfHittakuriTokyo2020, Step stepOfHittakuriTokyo2019,

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.example.domain.Original;
+
 /**
  * 市区町村テーブルを操作するリポジトリ.
  * 

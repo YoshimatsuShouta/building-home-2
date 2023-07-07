@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -67,6 +68,19 @@ public class AddressRepository {
 		} else {
 			return addressList.get(0);
 		}
+	}
+
+	public Map<String, Integer> addressToMap() {
+		StringBuilder sql = new StringBuilder();
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		sql.append("SELECT id,name  FROM addresses WHERE prefecture_id = 13;");
+		RowMapper<Address> rowMapper = new BeanPropertyRowMapper<>(Address.class);
+		List<Address> addressList = template.query(sql.toString(), rowMapper);
+		for (Address address : addressList) {
+			map.put(address.getName(), address.getId());
+		}
+		return map;
+
 	}
 
 }
