@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
+import com.example.domain.Original;
+
 /**
  * 住所に関するリポジトリ.
  * 
